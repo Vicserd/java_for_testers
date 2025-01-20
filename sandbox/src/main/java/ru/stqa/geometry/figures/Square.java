@@ -6,7 +6,7 @@ public class Square {
         System.out.println(text);
     }
 
-    private static double sqareArea(double a) {
+    public static double sqareArea(double a) {
         return a * a;
     }
 }
