@@ -52,17 +52,6 @@ public class TriangleTests {
             System.out.println(exception);
         }
     }
-    @Test //тест на успешную валидацию
-    void successfullValidationTriangle(){
-        try {
-            new Triangle(7.0, 3.0, 6.0);
-            Assertions.fail(); // Только вот вопрос, а это точно проверяется через fail?
-        } catch (IllegalArgumentException exception){
-            System.out.println("Все стороны - валидные");
-            System.out.println(exception);
-
-        }
-    }
    @Test
     void violatedInequalityTriangle () {
        try {
