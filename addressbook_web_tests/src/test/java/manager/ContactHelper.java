@@ -1,12 +1,14 @@
 package manager;
 
 import model.ContactData;
-import model.GroupData;
+
 import org.openqa.selenium.By;
 
-public class ContactHelper extends HelperBase{
 
-    public ContactHelper (ApplicationManager manager){
+
+public class ContactHelper extends HelperBase {
+
+    public ContactHelper(ApplicationManager manager) {
         super(manager);
     }
 
@@ -23,13 +25,13 @@ public class ContactHelper extends HelperBase{
     }
 
 
-
     public void createContact(ContactData contact) {
         initContactCreation();
         fillContactForm(contact);
         submitContactCreation();
         returnHomePage();
     }
+
     public void createContactAndNewPagAddContact(ContactData contact) {
         initContactCreation();
         fillContactForm(contact);
@@ -37,7 +39,8 @@ public class ContactHelper extends HelperBase{
         returnAddNextContactPage();
 
     }
-    public void removeContact(){
+
+    public void removeContact() {
         openHomePage();
         selectContact();
         removeSelectedContact();
@@ -71,8 +74,42 @@ public class ContactHelper extends HelperBase{
     private void returnAddNextContactPage() {
         click(By.linkText("add next"));
     }
-    private void removeSelectedContact(){
+
+    private void removeSelectedContact() {
         click(By.xpath("//input[@value='Delete']"));
     }
 
+    public int getCount() {
+        openHomePage();
+        return manager.driver.findElements(By.name("selected[]")).size();
+    }
+
+    public void removeAllContacts() {
+        openHomePage();
+        selectAllContacts();
+        removeSelectedContact();
+
+    }
+
+    private void selectAllContacts() {
+        var checkBoxes = manager.driver.findElements(By.name("selected[]"));
+        for (var checkbox : checkBoxes) {
+            checkbox.click();
+        }
+    }
+
+
+    /*public void removeSelectAllContacts() {
+        openHomePage();
+        selectAll();
+        removeSelectedContact();
+
+    }
+
+    private void selectAll() {
+
+        }
+    }
+
+    */
 }
