@@ -5,12 +5,11 @@ import model.GroupData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class ContactCreationTests extends TestBase{
 
@@ -18,13 +17,13 @@ public class ContactCreationTests extends TestBase{
 
     @Test
     public void canCreateContact(){
-        app.contact().createContact(new ContactData("firstname", "lastname",
+        app.contact().createContact(new ContactData("", "firstname", "lastname",
                 "address", "mobile", "email"));
 
     }
     @Test
     public void canNewPageAddContact(){
-        app.contact().createContactAndNewPagAddContact(new ContactData("firstname", "lastname",
+        app.contact().createContactAndNewPagAddContact(new ContactData("", "firstname", "lastname",
                 "address", "mobile", "email_add_new_contact"));
 
     }
@@ -63,7 +62,12 @@ public class ContactCreationTests extends TestBase{
                 for (var address : List.of("", "contact address")){
                     for (var mobile : List.of("","contact mobile")){
                         for (var email : List.of("", "contact@email")){
-                            result.add(new ContactData(firstname, lastname, address, mobile, email));
+                            result.add(new ContactData()
+                                    .withFirstname(firstname)
+                                    .withLastname(lastname)
+                                    .withAddress(address)
+                                    .withMobile(mobile)
+                                    .withEmail(email));
                         }
                     }
 
@@ -71,12 +75,18 @@ public class ContactCreationTests extends TestBase{
             }
         }
         for (int i = 0; i < 5; i++){
-            result.add(new ContactData(randomString(i*10), randomString(i*10),
-                    randomString(i*10), randomString(i*10), randomString(i*10)));
+            result.add(new ContactData()
+                    .withFirstname(randomString(i*10))
+                    .withLastname(randomString(i*10))
+                    .withAddress(randomString(i*10))
+                    .withMobile(randomString(i*10))
+                    .withEmail(randomString(i*10)));
+
         }
         return result;
 
     }
+
 
     @ParameterizedTest
     @MethodSource("contactProvider")
@@ -86,5 +96,8 @@ public class ContactCreationTests extends TestBase{
         int newContactCount = app.contact().getCount();
         Assertions.assertEquals(contactCount + 1, newContactCount);
     }
+
+
+
 
 }
