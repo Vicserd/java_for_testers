@@ -104,7 +104,6 @@ public class ContactHelper extends HelperBase {
     public List<ContactData> getListContacts() {
         openHomePage();
         var contacts = new ArrayList<ContactData>();
-        //var trs = manager.driver.findElements(By.cssSelector("tr.entry"));
         var trs = manager.driver.findElements(By.name("entry"));
         for (var tr : trs){
             var firstname = tr.findElement(By.cssSelector("td:nth-child(3)")).getText();

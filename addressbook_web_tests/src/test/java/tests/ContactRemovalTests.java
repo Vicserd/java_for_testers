@@ -18,7 +18,7 @@ public class ContactRemovalTests extends TestBase{
         }
         var oldContacts = app.contact().getListContacts();
         var rnd = new Random();
-        var index = rnd.nextInt(oldContacts.size());  //Не могу понять почему ругается на отрицательные значения
+        var index = rnd.nextInt(oldContacts.size());
         app.contact().removeContact(oldContacts.get(index));
         var newContacts = app.contact().getListContacts();
         var expectedList = new ArrayList<>(oldContacts);

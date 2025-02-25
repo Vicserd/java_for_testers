@@ -27,7 +27,7 @@ public class ApplicationManager {
             }
             Runtime.getRuntime().addShutdownHook(new Thread(driver::quit));
             driver.get("http://localhost/addressbook/addressbook/");
-            driver.manage().window().setSize(new Dimension(3440, 1440));
+            driver.manage().window().setSize(new Dimension(1280, 1024));
             session().login("admin", "secret");
         }
     }
