@@ -116,19 +116,13 @@ public class ContactHelper extends HelperBase {
         }
         return contacts;
     }
-
-
-    /*public void removeSelectAllContacts() {
+/*
+    public void modifyContact(ContactData contact, ContactData modifiedContact) {
         openHomePage();
-        selectAll();
-        removeSelectedContact();
+        selectContact(contact);
 
+        initContactCreation();
     }
+*/
 
-    private void selectAll() {
-
-        }
-    }
-
-    */
 }
