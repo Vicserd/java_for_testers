@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class ContactHelper extends HelperBase {
@@ -116,13 +117,31 @@ public class ContactHelper extends HelperBase {
         }
         return contacts;
     }
-/*
+
     public void modifyContact(ContactData contact, ContactData modifiedContact) {
         openHomePage();
         selectContact(contact);
-
-        initContactCreation();
+        initContactModification(contact);
+        fillContactForm(modifiedContact);
+        submitContactUpdate();
+        openHomePage();
     }
-*/
+
+    private void submitContactUpdate() {
+        click(By.name("update"));
+    }
+
+    private void initContactModification(ContactData contact) {
+        var rows = manager.driver.findElements(By.name("entry"));
+        for (var row : rows) {
+            var checkbox = row.findElement(By.name("selected[]"));
+            var id = checkbox.getAttribute("id");
+            if (Objects.equals(id, contact.id())) {
+                row.findElement(By.cssSelector("td:nth-child(8)")).click();
+                break;
+            }
+        }
+    }
+
 
 }
