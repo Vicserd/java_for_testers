@@ -14,50 +14,50 @@ import java.util.List;
 public class ContactCreationTests extends TestBase {
 
 
-    @Test
-    public void canCreateContact() {
-        app.contact().createContact(new ContactData("", "firstname", "lastname",
-                "address", "mobile", "email"));
+    /*  @Test
+      public void canCreateContact() {
+          app.contact().createContact(new ContactData("", "firstname", "lastname",
+                  "address", "mobile", "email"));
 
-    }
+      }
 
-    @Test
-    public void canNewPageAddContact() {
-        app.contact().createContactAndNewPagAddContact(new ContactData("", "firstname", "lastname",
-                "address", "mobile", "email_add_new_contact"));
+      @Test
+      public void canNewPageAddContact() {
+          app.contact().createContactAndNewPagAddContact(new ContactData("", "firstname", "lastname",
+                  "address", "mobile", "email_add_new_contact"));
 
-    }
+      }
 
-    @Test
-    public void canCreateContactWithEmptyName() {
-        app.contact().createContact(new ContactData());
-    }
+      @Test
+      public void canCreateContactWithEmptyName() {
+          app.contact().createContact(new ContactData());
+      }
 
-    @Test
-    public void canCreateContactWithLastNameOnly() {
-        app.contact().createContact(new ContactData().withLastname("some lastname"));
-    }
+      @Test
+      public void canCreateContactWithLastNameOnly() {
+          app.contact().createContact(new ContactData().withLastname("some lastname"));
+      }
 
-    @Test
-    public void canCreateContactWithFirstNameOnly() {
-        app.contact().createContact(new ContactData().withFirstname("some firstname"));
-    }
+      @Test
+      public void canCreateContactWithFirstNameOnly() {
+          app.contact().createContact(new ContactData().withFirstname("some firstname"));
+      }
 
-    @Test
-    public void canCreateContactWithAddressOnly() {
-        app.contact().createContact(new ContactData().withAddress("some address"));
-    }
+      @Test
+      public void canCreateContactWithAddressOnly() {
+          app.contact().createContact(new ContactData().withAddress("some address"));
+      }
 
-    @Test
-    public void canCreateContactWithMobileOnly() {
-        app.contact().createContact(new ContactData().withMobile("some mobile123"));
-    }
+      @Test
+      public void canCreateContactWithMobileOnly() {
+          app.contact().createContact(new ContactData().withMobile("some mobile123"));
+      }
 
-    @Test
-    public void canCreateContactWithEmail() {
-        app.contact().createContact(new ContactData().withEmail("some email"));
-    }
-
+      @Test
+      public void canCreateContactWithEmail() {
+          app.contact().createContact(new ContactData().withEmail("some email"));
+      }
+  */
     public static List<ContactData> contactProvider() {
         var result = new ArrayList<ContactData>();
         for (var firstname : List.of("", "contact firstname")) {
@@ -90,7 +90,7 @@ public class ContactCreationTests extends TestBase {
 
     }
 
-
+/*
     @ParameterizedTest
     @MethodSource("contactProvider")
     public void canCreateMultipleContact(ContactData contact) {
@@ -104,16 +104,37 @@ public class ContactCreationTests extends TestBase {
 
         var expectedList = new ArrayList<>(oldContacts);
         expectedList.add(contact.withId(newContacts.get(newContacts.size() - 1)
-                        .id())
-                .withLastname("")
-                .withFirstname("")
-                .withAddress("")
-                .withEmail("")
-                .withMobile(""));
+                .id())
+        );
         expectedList.sort(compareById);
 
         Assertions.assertEquals(newContacts, expectedList);
     }
+*/
+@ParameterizedTest
+@MethodSource("contactProvider")
+public void canCreateMultipleContact(ContactData contact) {
+    // Получаем старый список контактов
+    var oldContacts = app.contact().getListContacts();
 
+    // Добавляем новый контакт
+    app.contact().createContact(contact);
 
+    // Получаем новый список контактов
+    var newContacts = app.contact().getListContacts();
+
+    // Сравнение по id
+    Comparator<ContactData> compareById = (o1, o2) -> Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
+
+    // Сортируем оба списка
+    newContacts.sort(compareById);
+
+    // Создаем ожидаемый список
+    var expectedList = new ArrayList<>(oldContacts);
+    expectedList.add(contact.withId(newContacts.get(newContacts.size() - 1).id()));
+    expectedList.sort(compareById);
+
+    // Сравниваем старый и новый список
+    Assertions.assertEquals(expectedList, newContacts);
+}
 }

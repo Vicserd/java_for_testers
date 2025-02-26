@@ -49,7 +49,7 @@ public class ContactHelper extends HelperBase {
     }
 
     private void selectContact(ContactData contact) {
-        click(By.cssSelector(String.format("input[value='%s']",contact.id())));
+        click(By.cssSelector(String.format("input[value='%s']", contact.id())));
     }
 
     private void initContactCreation() {
@@ -57,11 +57,13 @@ public class ContactHelper extends HelperBase {
     }
 
     private void fillContactForm(ContactData contact) {
-        type(By.name("firstname"), contact.firstname());
         type(By.name("lastname"), contact.lastname());
-        type(By.name("mobile"), contact.mobile());
+        type(By.name("firstname"), contact.firstname());
         type(By.name("address"), contact.address());
         type(By.name("email"), contact.email());
+        type(By.name("mobile"), contact.mobile());
+
+
     }
 
     private void submitContactCreation() {
@@ -100,12 +102,11 @@ public class ContactHelper extends HelperBase {
     }
 
 
-
     public List<ContactData> getListContacts() {
         openHomePage();
         var contacts = new ArrayList<ContactData>();
         var trs = manager.driver.findElements(By.name("entry"));
-        for (var tr : trs){
+        for (var tr : trs) {
             var firstname = tr.findElement(By.cssSelector("td:nth-child(3)")).getText();
             var lastname = tr.findElement(By.cssSelector("td:nth-child(2)")).getText();
 
