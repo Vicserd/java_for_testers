@@ -132,16 +132,9 @@ public class ContactHelper extends HelperBase {
     }
 
     private void initContactModification(ContactData contact) {
-        var rows = manager.driver.findElements(By.name("entry"));
-        for (var row : rows) {
-            var checkbox = row.findElement(By.name("selected[]"));
-            var id = checkbox.getAttribute("id");
-            if (Objects.equals(id, contact.id())) {
-                row.findElement(By.cssSelector("td:nth-child(8)")).click();
-                break;
-            }
-        }
+        var pencil = String.format("//td[@class='center']/a[@href='edit.php?id=%s']", contact.id());
+        click(By.xpath(pencil));
+
+
     }
-
-
 }
