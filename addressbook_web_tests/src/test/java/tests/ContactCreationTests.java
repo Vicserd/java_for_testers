@@ -72,4 +72,14 @@ public void canCreateMultipleContact(ContactData contact) {
     // Сравниваем старый и новый список
     Assertions.assertEquals(expectedList, newContacts);
 }
+
+@Test
+    void canCreateContact(){
+        var contact = new ContactData()
+                .withFirstname(randomString(10))
+                .withLastname(randomString(10))
+                .withPhoto(randomFile("src/test/resources/images"));
+        app.contact().createContact(contact);
+}
+
 }
