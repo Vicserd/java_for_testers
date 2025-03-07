@@ -1,7 +1,7 @@
-package tests;
+package ru.stqa.addressbook.tests;
 
-import model.ContactData;
-import model.GroupData;
+import ru.stqa.addressbook.common.CommonFunctions;
+import ru.stqa.addressbook.model.ContactData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -34,11 +34,11 @@ public class ContactCreationTests extends TestBase {
         }
         for (int i = 0; i < 5; i++) {
             result.add(new ContactData()
-                    .withFirstname(randomString(i * 10))
-                    .withLastname(randomString(i * 10))
-                    .withAddress(randomString(i * 10))
-                    .withMobile(randomString(i * 10))
-                    .withEmail(randomString(i * 10)));
+                    .withFirstname(CommonFunctions.randomString(i * 10))
+                    .withLastname(CommonFunctions.randomString(i * 10))
+                    .withAddress(CommonFunctions.randomString(i * 10))
+                    .withMobile(CommonFunctions.randomString(i * 10))
+                    .withEmail(CommonFunctions.randomString(i * 10)));
 
         }
         return result;
@@ -76,8 +76,8 @@ public void canCreateMultipleContact(ContactData contact) {
 @Test
     void canCreateContact(){
         var contact = new ContactData()
-                .withFirstname(randomString(10))
-                .withLastname(randomString(10))
+                .withFirstname(CommonFunctions.randomString(10))
+                .withLastname(CommonFunctions.randomString(10))
                 .withPhoto(randomFile("src/test/resources/images"));
         app.contact().createContact(contact);
 }
