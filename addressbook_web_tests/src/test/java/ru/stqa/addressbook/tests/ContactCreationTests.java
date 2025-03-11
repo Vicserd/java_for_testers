@@ -47,8 +47,9 @@ public class ContactCreationTests extends TestBase {
 //                    .withEmail(CommonFunctions.randomString(i * 10)));
 //
 //        }
-        var mapper = new XmlMapper();
-        var value = mapper.readValue(new File("contacts.xml"), new TypeReference<List<ContactData>>() {});
+        //var mapper = new XmlMapper();
+        var mapper = new JsonMapper();
+        var value = mapper.readValue(new File("contacts.json"), new TypeReference<List<ContactData>>() {});
         result.addAll(value);
         return result;
 
