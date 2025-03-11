@@ -7,12 +7,15 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import ru.stqa.addressbook.common.CommonFunctions;
+import ru.stqa.addressbook.model.ContactData;
 import ru.stqa.addressbook.model.GroupData;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import static ru.stqa.addressbook.tests.TestBase.randomFile;
 
 public class Generator {
 
@@ -92,6 +95,14 @@ public class Generator {
     }
 
     private Object generateContacts() {
-        return null;
+        var result = new ArrayList<ContactData>();
+        for (int i = 0; i < count; i++){
+            result.add(new ContactData()
+                    .withLastname(CommonFunctions.randomString(i * 10))
+                    .withFirstname(CommonFunctions.randomString(i * 10))
+                    .withAddress(CommonFunctions.randomString(i * 10))
+                    .withPhoto(randomFile("src/test/resources/images")));
+        }
+        return result;
     }
 }
