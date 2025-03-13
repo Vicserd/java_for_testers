@@ -23,6 +23,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.15.4'
 
     implementation 'com.mysql:mysql-connector-j:9.2.0'
+    implementation 'org.hibernate.orm:hibernate-core:6.3.0.CR1'
 
 }
 

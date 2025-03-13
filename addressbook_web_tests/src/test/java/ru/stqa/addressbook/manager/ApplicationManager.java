@@ -20,6 +20,8 @@ public class ApplicationManager {
 
     private JdbcHelper jdbc;
 
+    private HibernateHelper hbm;
+
     private Properties properties;
 
     public void init(String browser, Properties properties) {
@@ -65,6 +67,13 @@ public class ApplicationManager {
             jdbc = new JdbcHelper(this);
         }
         return jdbc;
+    }
+
+    public HibernateHelper hbm(){
+        if (hbm == null){
+            hbm = new HibernateHelper(this);
+        }
+        return hbm;
     }
 
     protected boolean isElementPresent(By locator) {
