@@ -3,36 +3,40 @@ package ru.stqa.addressbook.manager;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
+import ru.stqa.addressbook.manager.hbm.ContactRecord;
 import ru.stqa.addressbook.manager.hbm.GroupRecord;
+import ru.stqa.addressbook.model.ContactData;
 import ru.stqa.addressbook.model.GroupData;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HibernateHelper extends HelperBase{
+public class HibernateHelper extends HelperBase {
 
     private SessionFactory sessionFactory;
 
 
-    public HibernateHelper(ApplicationManager manager){
+    public HibernateHelper(ApplicationManager manager) {
 
         super(manager);
         sessionFactory = new Configuration()
-                        //.addAnnotatedClass(Book.class)
-                        .addAnnotatedClass(GroupRecord.class)
+                .addAnnotatedClass(ContactRecord.class)
 
-                        .setProperty(AvailableSettings.URL, "jdbc:mysql://localhost/addressbook")
-                        // Credentials
-                        .setProperty(AvailableSettings.USER, "root")
-                        .setProperty(AvailableSettings.PASS, "")
+                //.addAnnotatedClass(Book.class)
+                .addAnnotatedClass(GroupRecord.class)
 
-                        // Create a new SessionFactory
-                        .buildSessionFactory();
+                .setProperty(AvailableSettings.URL, "jdbc:mysql://localhost/addressbook")
+                // Credentials
+                .setProperty(AvailableSettings.USER, "root")
+                .setProperty(AvailableSettings.PASS, "")
+
+                // Create a new SessionFactory
+                .buildSessionFactory();
     }
 
     static List<GroupData> convertList(List<GroupRecord> records) {
         List<GroupData> result = new ArrayList<>();
-        for (var record : records){
+        for (var record : records) {
             result.add(convert(record));
         }
         return result;
@@ -44,10 +48,33 @@ public class HibernateHelper extends HelperBase{
 
     private static GroupRecord convert(GroupData data) {
         var id = data.id();
-        if ("".equals(id)){
+        if ("".equals(id)) {
             id = "0";
         }
         return new GroupRecord(Integer.parseInt(id), data.name(), data.header(), data.footer());
+    }
+
+    static List<ContactData> convertContactRecord(List<ContactRecord> records) {
+        List<ContactData> result = new ArrayList<>();
+        for (var record : records) {
+            result.add(convert(record));
+        }
+        return result;
+    }
+
+    private static ContactData convert(ContactRecord record){
+        return new ContactData().withId("" + record.id)
+                .withFirstname(record.firstname)
+                .withLastname(record.lastname)
+                .withAddress(record.address);
+    }
+
+    private static ContactRecord convert (ContactData data) {
+        var id = data.id();
+        if ("".equals(id)) {
+            id = "0";
+        }
+        return new ContactRecord(Integer.parseInt(id),data.firstname(), data.lastname(), data.address());
     }
 
     public List<GroupData> getGroupList() {
@@ -69,5 +96,9 @@ public class HibernateHelper extends HelperBase{
             session.persist(convert(groupData));
             session.getTransaction().commit();
         });
+    }
+
+    public List<ContactData> getContactInGroup(GroupData group) {
+        return null;
     }
 }
