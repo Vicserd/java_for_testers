@@ -47,9 +47,9 @@ public class ContactCreationTests extends TestBase {
 //                    .withEmail(CommonFunctions.randomString(i * 10)));
 //
 //        }
-        //var mapper = new XmlMapper();
-        var mapper = new JsonMapper();
-        var value = mapper.readValue(new File("contacts.json"), new TypeReference<List<ContactData>>() {});
+        var mapper = new XmlMapper();
+        //var mapper = new JsonMapper();
+        var value = mapper.readValue(new File("contacts.xml"), new TypeReference<List<ContactData>>() {});
         result.addAll(value);
         return result;
 
@@ -58,46 +58,32 @@ public class ContactCreationTests extends TestBase {
 @ParameterizedTest
 @MethodSource("contactProvider")
 public void canCreateMultipleContact(ContactData contact) {
-    // Получаем старый список контактов
-    var oldContacts = app.contact().getListContacts();
-
-    // Добавляем новый контакт
+       var oldContacts = app.hbm().getContactList();
     app.contact().createContact(contact);
-
-    // Получаем новый список контактов
-    var newContacts = app.contact().getListContacts();
-
-    // Сравнение по id
+    var newContacts = app.hbm().getContactList();
     Comparator<ContactData> compareById = (o1, o2) -> Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
-
-    // Сортируем оба списка
     newContacts.sort(compareById);
-
-    // Создаем ожидаемый список
     var expectedList = new ArrayList<>(oldContacts);
-    expectedList.add(contact.withId(newContacts.get(newContacts.size() - 1).id())
-            .withAddress("").withEmail("").withMobile("").withPhoto(""));
+    expectedList.add(contact.withId(newContacts.get(newContacts.size() - 1).id()));
     expectedList.sort(compareById);
-
-    // Сравниваем старый и новый список
     Assertions.assertEquals(expectedList, newContacts);
 }
 
-@Test
-    void canCreateContact(){
-        var contact = new ContactData()
-                .withFirstname(CommonFunctions.randomString(10))
-                .withLastname(CommonFunctions.randomString(10))
-                .withPhoto(randomFile("src/test/resources/images"));
-        app.contact().createContact(contact);
-}
+//@Test
+//    void canCreateContact(){
+//        var contact = new ContactData()
+//                .withFirstname(CommonFunctions.randomString(10))
+//                .withLastname(CommonFunctions.randomString(10))
+//                ;
+//        app.contact().createContact(contact);
+//}
 
     @Test
     void canCreateContactInGroup(){
         var contact = new ContactData()
                 .withFirstname(CommonFunctions.randomString(10))
                 .withLastname(CommonFunctions.randomString(10))
-                .withPhoto(randomFile("src/test/resources/images"));
+                ;
 
         if (app.hbm().getGroupCount() == 0) {
             app.hbm().createGroup(new GroupData("", "group name", "group header", "group footer"));

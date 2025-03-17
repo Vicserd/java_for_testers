@@ -25,7 +25,7 @@ public class HibernateHelper extends HelperBase {
                 //.addAnnotatedClass(Book.class)
                 .addAnnotatedClass(GroupRecord.class)
 
-                .setProperty(AvailableSettings.URL, "jdbc:mysql://localhost/addressbook")
+                .setProperty(AvailableSettings.URL, "jdbc:mysql://localhost/addressbook?zeroDateTimeBehavior=convertToNull")
                 // Credentials
                 .setProperty(AvailableSettings.USER, "root")
                 .setProperty(AvailableSettings.PASS, "")
@@ -54,7 +54,7 @@ public class HibernateHelper extends HelperBase {
         return new GroupRecord(Integer.parseInt(id), data.name(), data.header(), data.footer());
     }
 
-    static List<ContactData> convertContactRecord(List<ContactRecord> records) {
+    static List<ContactData> convertContactList(List<ContactRecord> records) {
         List<ContactData> result = new ArrayList<>();
         for (var record : records) {
             result.add(convert(record));
@@ -99,6 +99,33 @@ public class HibernateHelper extends HelperBase {
     }
 
     public List<ContactData> getContactInGroup(GroupData group) {
-        return null;
+        return sessionFactory.fromSession(session -> {
+            return convertContactList(session.get(GroupRecord.class, group.id()).contacts);
+
+        });
+
+
     }
+
+    public List<ContactData> getContactList() {
+        return (sessionFactory.fromSession(session -> {
+            return convertContactList(session.createQuery("from ContactRecord", ContactRecord.class).list());
+        }));
+    }
+
+    public long getContactCount() {
+        return sessionFactory.fromSession(session -> {
+            return session.createQuery("select count (*) from ContactRecord", Long.class).getSingleResult();
+        });
+    }
+
+    public void createContact(ContactData contactData) {
+        sessionFactory.inSession(session -> {
+            session.getTransaction().begin();
+            session.persist(convert(contactData));
+            session.getTransaction().commit();
+        });
+    }
+
 }
+

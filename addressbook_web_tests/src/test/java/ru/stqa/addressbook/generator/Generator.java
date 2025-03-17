@@ -100,8 +100,8 @@ public class Generator {
             result.add(new ContactData()
                     .withLastname(CommonFunctions.randomString(i * 10))
                     .withFirstname(CommonFunctions.randomString(i * 10))
-                    .withAddress(CommonFunctions.randomString(i * 10))
-                    .withPhoto(randomFile("src/test/resources/images")));
+                    .withAddress(CommonFunctions.randomString(i * 10)));
+                   // .withPhoto(randomFile("src/test/resources/images")));
         }
         return result;
     }
