@@ -151,4 +151,27 @@ public class ContactHelper extends HelperBase {
 
 
     }
+
+    public void deleteFromGroup(GroupData group, ContactData contact) {
+        openHomePage();
+        selectGroupSort(group);
+        selectContact(contact);
+        removeFrom();
+        openHomePage();
+        //selectFirstContact();
+
+
+            }
+
+    private void removeFrom() {
+        manager.driver.findElement(By.name("remove")).click();
+    }
+
+    private void selectFirstContact() {
+        click(By.cssSelector("input[type='checkbox']"));
+    }
+
+    private void selectGroupSort(GroupData group) {
+        new Select(manager.driver.findElement(By.name("group"))).selectByValue(group.id());
+    }
 }
