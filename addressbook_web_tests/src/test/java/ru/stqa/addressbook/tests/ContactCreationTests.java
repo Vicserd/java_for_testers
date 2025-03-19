@@ -95,5 +95,23 @@ public void canCreateMultipleContact(ContactData contact) {
         var newRelated = app.hbm().getContactInGroup(group);
         Assertions.assertEquals(oldRelated.size() + 1, newRelated.size());
     }
+    @Test
+    void canAddContactInGroup(){
+        if (app.hbm().getGroupCount() == 0) {
+            app.hbm().createGroup(new GroupData("", "group name", "group header", "group footer"));
+        }
+        var group = app.hbm().getGroupList().get(0);
+        if (app.hbm().getContactCount() == 0) {
+            app.contact().createContact(new ContactData()
+                    .withFirstname(CommonFunctions.randomString(10))
+                    .withLastname(CommonFunctions.randomString(10))
+            );
+        }
+        var contact = app.hbm().getContactList().get(0);
+        var oldRelated = app.hbm().getContactInGroup(group);
+        app.contact().addContactToGroup(contact, group);
+        var newRelated = app.hbm().getContactInGroup(group);
+        Assertions.assertEquals(oldRelated.size() + 1, newRelated.size());
+    }
 
 }
