@@ -101,13 +101,21 @@ public void canCreateMultipleContact(ContactData contact) {
             app.hbm().createGroup(new GroupData("", "group name", "group header", "group footer"));
         }
         var group = app.hbm().getGroupList().get(0);
+        var allContacts = app.hbm().getContactList();
+        ContactData contact = null;
+        var contactsInGroup = app.hbm().getContactInGroup(group);
+        for (var c : allContacts) {
+            if (!contactsInGroup.contains(c)) {
+                contact = c;
+                break;
+            }
+        }
         if (app.hbm().getContactCount() == 0) {
             app.contact().createContact(new ContactData()
                     .withFirstname(CommonFunctions.randomString(10))
                     .withLastname(CommonFunctions.randomString(10))
             );
         }
-        var contact = app.hbm().getContactList().get(0);
         var oldRelated = app.hbm().getContactInGroup(group);
         app.contact().addContactToGroup(contact, group);
         var newRelated = app.hbm().getContactInGroup(group);

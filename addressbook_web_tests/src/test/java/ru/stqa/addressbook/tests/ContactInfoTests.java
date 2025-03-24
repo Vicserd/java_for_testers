@@ -22,5 +22,5 @@ public class ContactInfoTests extends TestBase {
         Assertions.assertEquals(expected, phones);
 
         }
-    
+
 }
