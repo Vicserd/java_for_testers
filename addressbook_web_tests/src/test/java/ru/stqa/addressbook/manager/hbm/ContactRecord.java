@@ -23,6 +23,7 @@ public class ContactRecord {
     public String work;
     public String phone2;
 
+
     public ContactRecord() {
 
     }

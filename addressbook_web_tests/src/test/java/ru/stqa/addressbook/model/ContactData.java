@@ -3,6 +3,7 @@ package ru.stqa.addressbook.model;
 public record ContactData(
         String id,
         String firstname,
+
         String lastname,
         String address,
         String mobile,
@@ -44,6 +45,18 @@ public record ContactData(
     }
     public ContactData withSecondary(String secondary) {
         return new ContactData(this.id, this.firstname, this.lastname, this.address, this.mobile, this.email, this.home, this.work, secondary);
+    }
+
+    public String getFirstname() {
+        return this.firstname;
+    }
+
+    public String getLastname() {
+        return this.lastname;
+    }
+
+    public String getId() {
+        return this.id;
     }
 }
 

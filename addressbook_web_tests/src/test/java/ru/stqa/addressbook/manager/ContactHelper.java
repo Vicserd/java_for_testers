@@ -45,6 +45,7 @@ public class ContactHelper extends HelperBase {
         selectGroup(group);
         submitContactCreation();
         returnHomePage();
+
     }
 
     private void selectGroup(GroupData group) {
@@ -156,24 +157,22 @@ public class ContactHelper extends HelperBase {
 
     }
 
-//    public void deleteFromGroup(GroupData group, ContactData contact) {
-//        openHomePage();
-//        selectGroupSort(group);
-//        selectContact(contact);
-//        removeFrom();
-//        openHomePage();
-//        //selectFirstContact();
-//
-//
-//            }
+    public void removeContactFromGroup(ContactData contact, GroupData group) {
+        openHomePage();
+        new Select(manager.driver.findElement(By.name("group"))).selectByValue(group.id());
+
+        selectContact(contact);
+        removeFrom();
+        openHomePage();
+
+
+
+            }
 
     private void removeFrom() {
         manager.driver.findElement(By.name("remove")).click();
     }
 
-//    private void selectFirstContact() {
-//        click(By.cssSelector("input[type='checkbox']"));
-//    }
 
     private void selectGroupSort(GroupData group) {
         new Select(manager.driver.findElement(By.name("to_group"))).selectByValue(group.id());
@@ -182,6 +181,10 @@ public class ContactHelper extends HelperBase {
     public void addContactToGroup(ContactData contact, GroupData group) {
         openHomePage();
         selectContact(contact);
+        WebElement checkbox = manager.driver.findElement(By.cssSelector(String.format("input[value='%s']", contact.id())));
+        if (!checkbox.isSelected()) {
+            checkbox.click();
+        }
         selectGroupSort(group);
         click(By.name("add"));
     }
@@ -202,4 +205,16 @@ public class ContactHelper extends HelperBase {
         return result;
 
     }
+    public Map<String, String> getAddress() {
+        var result = new HashMap<String, String>();
+        List<WebElement> rows = manager.driver.findElements(By.name("entry"));
+        for (WebElement row : rows) {
+            var id = row.findElement(By.tagName("input")).getAttribute("id");
+            var address = row.findElements(By.tagName("td")).get(3).getText();
+            result.put(id, address);
+        }
+        return result;
+
+    }
+
 }
