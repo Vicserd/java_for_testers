@@ -24,22 +24,42 @@ public class ContactInfoTests extends TestBase {
 
         }
 
-//    @Test
-//    void testAddress() {
+    @Test
+    void testAddress() {
 //        if (app.hbm().getContactCount() == 0) {
 //            app.hbm().createContact(new ContactData("", "firstname", "lastname","address", "", "", "", "", ""));
 //        }
-//
-//        var contacts = app.hbm().getContactList();
-//        var contact = contacts.get(0);
-//        var address = app.contact().getAddress();
-//      var expected = contacts.stream().collect(Collectors.toMap(ContactData::id, contactData ->
-//               Stream.of(contact.address())
-//              .filter(s -> s != null && ! "".equals(s))
-//              .collect(Collectors.joining("\r\n"))));
-//
-//        Assertions.assertEquals(expected, address);
-//
-//    }
+
+        var contacts = app.hbm().getContactList();
+        var contact = contacts.get(0);
+        var address = app.contact().getAddress();
+      var expected = contacts.stream().collect(Collectors.toMap(ContactData::id, contactData ->
+               Stream.of(contact.address())
+              .filter(s -> s != null && ! "".equals(s))
+                       .map(String::trim)
+              .collect(Collectors.joining("\r\n"))));
+        System.out.println("Expected: " + expected);
+        System.out.println("Actual: " + address);
+
+        Assertions.assertEquals(expected, address);
+
+    }
+
+    @Test
+    void testEmails() {
+        //        if (app.hbm().getContactCount() == 0) {
+//            app.hbm().createContact(new ContactData("", "firstname", "lastname","address", "", "", "", "", ""));
+//        }
+        var contacts = app.hbm().getContactList();
+        var expected = contacts.stream().collect(Collectors.toMap(ContactData::id, contact ->
+                Stream.of(contact.email(), contact.email2(), contact.email3())
+                        .filter(e -> e != null && !"".equals(e))
+                        .collect(Collectors.joining("\n"))
+        ));
+
+        var email = app.contact().getPhones();
+        Assertions.assertEquals(expected, email);
+
+    }
 
 }
