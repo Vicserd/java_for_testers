@@ -100,22 +100,22 @@ public void canCreateMultipleContact(ContactData contact) {
         if (app.hbm().getGroupCount() == 0) {
             app.hbm().createGroup(new GroupData("", "group name", "group header", "group footer"));
         }
-        var group = app.hbm().getGroupList().get(0);
-        var allContacts = app.hbm().getContactList();
+        var group = app.hbm().getGroupList().get(0); //первая группа из списка
+        var allContacts = app.hbm().getContactList(); //список всех контактов
         ContactData contact = null;
-        var contactsInGroup = app.hbm().getContactInGroup(group);
+        var contactsInGroup = app.hbm().getContactInGroup(group); //список контактов в группе
         for (var c : allContacts) {
             if (!contactsInGroup.contains(c)) {
                 contact = c;
                 break;
             }
-        }
-        if (app.hbm().getContactCount() == 0) {
-            app.contact().createContact(new ContactData()
+        } //ищем подходящий контакт
+        if (contact == null) {
+            contact = new ContactData()
                     .withFirstname(CommonFunctions.randomString(10))
-                    .withLastname(CommonFunctions.randomString(10))
-            );
-        }
+                    .withLastname(CommonFunctions.randomString(10));
+            app.contact().createContact(contact);
+        } //если не найден - создаем новый
         var oldRelated = app.hbm().getContactInGroup(group);
         app.contact().addContactToGroup(contact, group);
         var newRelated = app.hbm().getContactInGroup(group);
