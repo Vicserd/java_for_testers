@@ -37,37 +37,6 @@ public class ContactRemovalTests extends TestBase {
         Assertions.assertEquals(0, app.hbm().getContactCount());
     }
 
-//    @Test
-//    void canRemoveContactInGroup() {
-//        if (app.hbm().getGroupCount() == 0) {
-//            app.groups().createGroup(new GroupData("",
-//                    "group name",
-//                    "group header",
-//                    "group footer"));
-//        }
-//
-//        var group = app.hbm().getGroupList().get(0);
-//        var contactsInGroup = app.hbm().getContactInGroup(group);
-//        ContactData contact;
-//
-//        if (!contactsInGroup.isEmpty()) {
-//            contact = contactsInGroup.get(0);
-//        } else {
-//            contact = new ContactData()
-//                    .withFirstname(CommonFunctions.randomString(10))
-//                    .withLastname(CommonFunctions.randomString(10))
-//                    .withAddress(CommonFunctions.randomString(10));
-//
-//            app.contact().createContact(contact, group);
-//            contactsInGroup = app.hbm().getContactInGroup(group);
-//            Assertions.assertTrue(contactsInGroup.contains(contact), "Контакт не добавился в группу!");
-//        }
-//        app.contact().removeContactFromGroup(contact, group);
-//        contactsInGroup = app.hbm().getContactInGroup(group);
-//        Assertions.assertFalse(contactsInGroup.contains(contact), "Контакт не удалился из группы!");
-//
-//
-//    }
 @Test
 void canRemoveContactInGroup() {
     if (app.hbm().getGroupCount() == 0) {
@@ -83,10 +52,8 @@ void canRemoveContactInGroup() {
 
     if (!contactsInGroup.isEmpty()) {
         contact = contactsInGroup.get(0); // Если в группе есть контакты, выбираем первый контакт для удаления
+        app.contact().removeContactAndVerify(contact, group);
 
-        app.contact().removeContactFromGroup(contact, group);  // Удаляем контакт из группы
-        contactsInGroup = app.hbm().getContactInGroup(group);
-        Assertions.assertFalse(contactsInGroup.contains(contact), "Контакт не удалился из группы!");
     } else {
         contact = new ContactData()
                 .withFirstname(CommonFunctions.randomString(10))
@@ -100,13 +67,9 @@ void canRemoveContactInGroup() {
                 .filter(c -> c.getFirstname().equals(contact.getFirstname()) && c.getLastname().equals(contact.getLastname()))
                 .findFirst().orElseThrow().getId(); //достаем id после создания контакта
         app.contact().addContactToGroup(contact.withId(newContactId), group); //добавляем контакт в группу
-
-        app.contact().removeContactFromGroup(contact, group); //удаляем контакт
-        contactsInGroup = app.hbm().getContactInGroup(group);
-        Assertions.assertFalse(contactsInGroup.contains(contact), "Контакт не удалился из группы!");
+        app.contact().removeContactAndVerify(contact, group);
     }
 }
-
 
 
 }

@@ -35,7 +35,7 @@ public class ContactInfoTests extends TestBase {
         var address = app.contact().getAddress();
       var expected = contacts.stream().collect(Collectors.toMap(ContactData::id, contactData ->
                Stream.of(contact.address())
-              .filter(s -> s != null && ! "".equals(s))
+              .filter(a -> a != null && ! "".equals(a))
                        .map(String::trim)
               .collect(Collectors.joining("\r\n"))));
         System.out.println("Expected: " + expected);

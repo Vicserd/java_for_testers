@@ -114,8 +114,10 @@ public void canCreateMultipleContact(ContactData contact) {
             contact = new ContactData()
                     .withFirstname(CommonFunctions.randomString(10))
                     .withLastname(CommonFunctions.randomString(10));
+        }
+        if (contact.getId() == null) {
             app.contact().createContact(contact);
-        } //если не найден - создаем новый
+        }
         var oldRelated = app.hbm().getContactInGroup(group);
         app.contact().addContactToGroup(contact, group);
         var newRelated = app.hbm().getContactInGroup(group);

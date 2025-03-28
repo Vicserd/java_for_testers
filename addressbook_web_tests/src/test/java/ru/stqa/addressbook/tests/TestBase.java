@@ -2,6 +2,7 @@ package ru.stqa.addressbook.tests;
 
 import org.junit.jupiter.api.AfterEach;
 import ru.stqa.addressbook.manager.ApplicationManager;
+
 import org.junit.jupiter.api.BeforeEach;
 
 import java.io.File;

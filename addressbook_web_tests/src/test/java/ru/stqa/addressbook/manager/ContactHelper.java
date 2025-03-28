@@ -1,5 +1,6 @@
 package ru.stqa.addressbook.manager;
 
+import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import ru.stqa.addressbook.model.ContactData;
@@ -166,8 +167,7 @@ public class ContactHelper extends HelperBase {
         openHomePage();
 
 
-
-            }
+    }
 
     private void removeFrom() {
         manager.driver.findElement(By.name("remove")).click();
@@ -205,6 +205,7 @@ public class ContactHelper extends HelperBase {
         return result;
 
     }
+
     public Map<String, String> getAddress() {
         var result = new HashMap<String, String>();
         List<WebElement> rows = manager.driver.findElements(By.name("entry"));
@@ -215,6 +216,12 @@ public class ContactHelper extends HelperBase {
         }
         return result;
 
+    }
+
+    public void removeContactAndVerify(ContactData contact, GroupData group) {
+        removeContactFromGroup(contact, group);  // Удаляем контакт из группы
+        var contactsInGroup = manager.hbm().getContactInGroup(group);
+        Assertions.assertFalse(contactsInGroup.contains(contact), "Контакт не удалился из группы!");
     }
 
 }
