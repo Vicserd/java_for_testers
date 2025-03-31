@@ -217,11 +217,24 @@ public class ContactHelper extends HelperBase {
         return result;
 
     }
+    public Map<String, String> getEmails() {
+        var result = new HashMap<String, String>();
+        List<WebElement> rows = manager.driver.findElements(By.name("entry"));
+        for (WebElement row : rows) {
+            var id = row.findElement(By.tagName("input")).getAttribute("id");
+            var email = row.findElements(By.tagName("td")).get(4).getText();
+            result.put(id, email);
+        }
+        return result;
+    }
+
+
 
     public void removeContactAndVerify(ContactData contact, GroupData group) {
         removeContactFromGroup(contact, group);  // Удаляем контакт из группы
         var contactsInGroup = manager.hbm().getContactInGroup(group);
         Assertions.assertFalse(contactsInGroup.contains(contact), "Контакт не удалился из группы!");
     }
+
 
 }

@@ -8,6 +8,8 @@ import ru.stqa.addressbook.model.GroupData;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ContactRemovalTests extends TestBase {
 
@@ -15,7 +17,15 @@ public class ContactRemovalTests extends TestBase {
     public void canRemoveContact() {
         if (app.hbm().getContactCount() == 0) {
             app.contact().createContact(new ContactData("", "firstname", "lastname",
-                    "address", "mobile", "", "", "", "email", "", ""));
+                    "address",
+                    "mobile",
+                    "", "", "", "email", "", "",
+                    "middlename", "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""));
         }
         var oldContacts = app.contact().getListContacts();
         var rnd = new Random();
@@ -30,8 +40,18 @@ public class ContactRemovalTests extends TestBase {
     @Test
     void canRemoveAllContactsAtOnce() {
         if (app.hbm().getContactCount() == 0) {
-            app.contact().createContact(new ContactData("", "firstname", "lastname",
-                    "address", "mobile", "", "", "", "email", "", ""));
+            app.contact().createContact(new ContactData("",
+                    "firstname",
+                    "lastname",
+                    "address",
+                    "mobile",
+                    "", "", "", "email", "", "",
+                    "middlename", "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""));
         }
         app.contact().removeAllContacts();
         Assertions.assertEquals(0, app.hbm().getContactCount());
@@ -70,6 +90,46 @@ void canRemoveContactInGroup() {
         app.contact().removeContactAndVerify(contact, group);
     }
 }
+    @Test
+    void testAddress() {
+        if (app.hbm().getContactCount() == 0) {
+            app.hbm().createContact(new ContactData("",
+                    "firstname",
+                    "lastname",
+                    "address",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "middlename",
+                    "nickname",
+                    "company",
+                    "",
+                    "",
+                    "",
+                    ""));
+        }
+
+        var contacts = app.hbm().getContactList();
+        var contact = contacts.get(0);
+        app.contact().openHomePage();
+        var address = app.contact().getAddress();
+        var expected = contacts.stream().collect(Collectors.toMap(ContactData::id, contactData ->
+                Stream.of(contact.address())
+                        .filter(a -> a != null && ! "".equals(a))
+                        .map(a -> a.replace("\r\n", "\n"))
+                        .collect(Collectors.joining("\n"))));
+
+
+        System.out.println("Expected: " + expected);
+        System.out.println("Actual: " + address);
+
+        Assertions.assertEquals(expected, address);
+
+    }
 
 
 }
