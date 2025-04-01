@@ -96,7 +96,7 @@ public void canCreateMultipleContact(ContactData contact) {
         Assertions.assertEquals(oldRelated.size() + 1, newRelated.size());
     }
     @Test
-    void canAddContactInGroup(){
+    void canAddContactInGroup() throws InterruptedException {
         if (app.hbm().getGroupCount() == 0) {
             app.hbm().createGroup(new GroupData("", "group name", "group header", "group footer"));
         }
@@ -114,9 +114,17 @@ public void canCreateMultipleContact(ContactData contact) {
             contact = new ContactData()
                     .withFirstname(CommonFunctions.randomString(10))
                     .withLastname(CommonFunctions.randomString(10));
-        }
-        if (contact.getId() == null) {
-            app.contact().createContact(contact);
+            app.contact().createContact(contact); //создали контакт
+            var allContactsAfterCreation = app.hbm().getContactList(); // получили все контакты из базы
+            ContactData finalContact = contact;
+            ContactData createdContact = allContactsAfterCreation.stream()
+                    .filter(c -> c.getFirstname().equals(finalContact.getFirstname())
+                            && c.getLastname().equals(finalContact.getLastname()))
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("Created contact not found!"));
+
+            contact = contact.withId(createdContact.getId()); //получили id созданного контакта
+
         }
         var oldRelated = app.hbm().getContactInGroup(group);
         app.contact().addContactToGroup(contact, group);

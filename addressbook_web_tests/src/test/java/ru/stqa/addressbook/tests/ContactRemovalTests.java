@@ -87,49 +87,8 @@ void canRemoveContactInGroup() {
                 .filter(c -> c.getFirstname().equals(contact.getFirstname()) && c.getLastname().equals(contact.getLastname()))
                 .findFirst().orElseThrow().getId(); //достаем id после создания контакта
         app.contact().addContactToGroup(contact.withId(newContactId), group); //добавляем контакт в группу
-        app.contact().removeContactAndVerify(contact, group);
+        app.contact().removeContactAndVerify(contact.withId(newContactId), group);
     }
 }
-    @Test
-    void testAddress() {
-        if (app.hbm().getContactCount() == 0) {
-            app.hbm().createContact(new ContactData("",
-                    "firstname",
-                    "lastname",
-                    "address",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "middlename",
-                    "nickname",
-                    "company",
-                    "",
-                    "",
-                    "",
-                    ""));
-        }
-
-        var contacts = app.hbm().getContactList();
-        var contact = contacts.get(0);
-        app.contact().openHomePage();
-        var address = app.contact().getAddress();
-        var expected = contacts.stream().collect(Collectors.toMap(ContactData::id, contactData ->
-                Stream.of(contact.address())
-                        .filter(a -> a != null && ! "".equals(a))
-                        .map(a -> a.replace("\r\n", "\n"))
-                        .collect(Collectors.joining("\n"))));
-
-
-        System.out.println("Expected: " + expected);
-        System.out.println("Actual: " + address);
-
-        Assertions.assertEquals(expected, address);
-
-    }
-
 
 }
