@@ -21,32 +21,32 @@ public class ContactCreationTests extends TestBase {
 
     public static List<ContactData> contactProvider() throws IOException {
         var result = new ArrayList<ContactData>();
-//        for (var firstname : List.of("", "contact firstname")) {
-//            for (var lastname : List.of("", "contact lastname")) {
-//                for (var address : List.of("", "contact address")) {
-//                    for (var mobile : List.of("", "contact mobile")) {
-//                        for (var email : List.of("", "contact@email")) {
-//                            result.add(new ContactData()
-//                                    .withFirstname(firstname)
-//                                    .withLastname(lastname)
-//                                    .withAddress(address)
-//                                    .withMobile(mobile)
-//                                    .withEmail(email));
-//                        }
-//                    }
-//
-//                }
-//            }
-//        }
-//        for (int i = 0; i < 5; i++) {
-//            result.add(new ContactData()
-//                    .withFirstname(CommonFunctions.randomString(i * 10))
-//                    .withLastname(CommonFunctions.randomString(i * 10))
-//                    .withAddress(CommonFunctions.randomString(i * 10))
-//                    .withMobile(CommonFunctions.randomString(i * 10))
-//                    .withEmail(CommonFunctions.randomString(i * 10)));
-//
-//        }
+        for (var firstname : List.of("", "contact firstname")) {
+            for (var lastname : List.of("", "contact lastname")) {
+                for (var address : List.of("", "contact address")) {
+                    for (var mobile : List.of("", "contact mobile")) {
+                        for (var email : List.of("", "contact@email")) {
+                            result.add(new ContactData()
+                                    .withFirstname(firstname)
+                                    .withLastname(lastname)
+                                    .withAddress(address)
+                                    .withMobile(mobile)
+                                    .withEmail(email));
+                        }
+                    }
+
+                }
+            }
+        }
+        for (int i = 0; i < 5; i++) {
+            result.add(new ContactData()
+                    .withFirstname(CommonFunctions.randomString(i * 10))
+                    .withLastname(CommonFunctions.randomString(i * 10))
+                    .withAddress(CommonFunctions.randomString(i * 10))
+                    .withMobile(CommonFunctions.randomString(i * 10))
+                    .withEmail(CommonFunctions.randomString(i * 10)));
+
+        }
         var mapper = new XmlMapper();
         //var mapper = new JsonMapper();
         var value = mapper.readValue(new File("contacts.xml"), new TypeReference<List<ContactData>>() {});
